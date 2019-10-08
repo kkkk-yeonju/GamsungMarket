@@ -43,7 +43,7 @@ public class SecurityConfig
 			
 			.authorizeRequests()
 			.antMatchers("/member/admin/**").access("hasRole('ROLE_ADMIN')")
-			.antMatchers("/member/mypage/**").access("hasAnyRole('ROLE_USER, ROLE_BLACKLIST')")
+			.antMatchers("/member/mypage").access("hasAnyRole('ROLE_USER, ROLE_BLACKLIST')")
 			.antMatchers("/member/chatting/**").access("hasRole('ROLE_USER')")
 			.antMatchers("/product/write").access("hasRole('ROLE_USER')")
 			.antMatchers("/product/update/**").access("hasRole('ROLE_USER')")

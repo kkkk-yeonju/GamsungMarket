@@ -68,12 +68,12 @@ $(function() {
 	    var chan_val = year + '-' + mon + '-' + day +' '+h + ':' +m;
 
 		var message = obj.contents;
-		var receiver = obj.receiver;
+		var senderNickName = obj.senderNickName;
 		$('#greetings').append(
 				'<div class="row py-3 justify-content-start">\
 					<img class="profile col-2" src="/files/profile-files/'+receiverProfile+'">\
 					<div>\
-						<div>receiver</div>\
+						<div>'+senderNickName+'</div>\
 						<div class="contents">'+message+'</div>\
 						<span>'+chan_val+'</span>\
 					</div>\
@@ -181,7 +181,7 @@ var receiverProfile = $("#profile").val();
 var currentId = $("#currentId").val();
 
 function connect(sendfn, receivefn){
-	var socket = new SockJS('http://192.168.6.14:8088/websocket'); //실행하는 서버 ip주소로 변경해야 웹소켓 가능
+	var socket = new SockJS('http://172.16.6.18:8088/websocket'); //실행하는 서버 ip주소로 변경해야 웹소켓 가능
 	stompClient = Stomp.over(socket);
 	stompClient.connect({},function(frame){
 		console.log('Connected : '+frame);

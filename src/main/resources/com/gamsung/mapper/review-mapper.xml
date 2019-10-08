@@ -94,6 +94,7 @@
 		where r.deal_no = d.deal_no
 		and d.product_no = p.product_no
 		and p.seller = #{id}
+		order by r.reg_date desc
 	</select>
 	
 	<select id="selectStoreAvg" resultType="float" parameterType="String">

@@ -2,6 +2,8 @@ package com.gamsung.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,13 +19,16 @@ public class HomeController {
 	private ProductService productService;
 
 	@GetMapping(path = { "/", "/home" })
-	public String home(Model model) {
+	public String home(Model model, HttpServletRequest req) {
 		
 		List<Product> main = productService.findMain();
 		
 		model.addAttribute("main", main);
 		
+		System.out.println(req.getServletContext().getRealPath("/files/"));
+		
 		return "home";
+
 	}
 	
 }

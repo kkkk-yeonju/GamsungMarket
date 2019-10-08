@@ -63,7 +63,11 @@ public class ReviewServiceImpl implements ReviewService {
 		List<Review> reviewlist = reviewMapper.selectReview(memberId);
 		for(Review review : reviewlist) {
 			Deal deal = dealMapper.selectDealByDealNo(review.getDealNo());
-			review.setProductNo(deal.getProductNo());
+			if (deal != null) {
+				review.setProductNo(deal.getProductNo());
+			} else {
+				//System.out.println(review.getDealNo() + "");
+			}
 		}
 		return reviewlist;
 	}

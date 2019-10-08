@@ -142,10 +142,11 @@
 	
 	 <!-- 상점 -->
 	<select id="selectStoreById" resultType="com.gamsung.vo.Member" parameterType="String">
-		select distinct p.seller, m.img_file_name, m.introduction, m.nickname, p.count
-		from product p, member m
-		where p.seller = m.id
-		and p.seller = #{seller}
+		select product_no, p.seller, m.img_file_name, m.introduction, m.nickname, p.count, p.reg_date, p.name
+		from product p inner join member m
+		on p.seller = m.id
+		where p.seller = #{seller}
+		order by p.product_no desc;
 	</select>
 	
 	
