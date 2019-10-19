@@ -104,7 +104,7 @@ public class ProductController {
 			pageNo=1;
 		}
 		
-		int pageSize = 12;
+		int pageSize = 8;
 		int currentPage = pageNo;
 
 		int from = (currentPage - 1) * pageSize + 1;
@@ -138,54 +138,21 @@ public class ProductController {
 		model.addAttribute("category", category);
 		model.addAttribute("keyword", keyword);
 		
-		
 
 		return "product/list";
 	}
 
 	@PostMapping(path = "/categories")
 	@ResponseBody
-	public ArrayList<Product> productListReact(Model model, String type ,String category, String keyword, Integer pageNo) {
-		if(pageNo == null) {
-			pageNo=1;
-		}
-		
-		int pageSize = 12;
-		int currentPage = pageNo;
+	public ArrayList<Product> productListReact() {
 
-		int from = (currentPage - 1) * pageSize + 1;
-		int to = from + pageSize;
-
-
-		if (type == null) {
-			type = "all";
-		}
-		
-		if (category == null) {
-			category = "every";
-		}
-		
-		if (keyword == null) {
-			keyword = "";
-		}
-		
-
+		String keyword = "";
 		HashMap<String, Object> params = new HashMap<String, Object>();
-		params.put("from", from-1);
-		params.put("to", to);
-		params.put("type", type);
-		params.put("category", category);
 		params.put("keyword", keyword);
 		
 		
 		ArrayList<Product> products = productService.findProducts(params);
-		model.addAttribute("products", products);
-//		model.addAttribute("type", type);
-//		model.addAttribute("category", category);
-//		model.addAttribute("keyword", keyword);
 		
-		
-
 		return products;
 	}
 	

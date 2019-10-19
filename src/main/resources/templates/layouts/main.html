@@ -26,15 +26,14 @@
 					<div class="logo"><a href="/home">GamSung.</a></div>
 					<nav class="main_nav">
 						<ul>
-							<li class="hassubs active">
-								<a href="/home">Home</a>
-								<ul>
-									<li><a href="/product/categories">Categories</a></li>
-									<li><a href="/product/write">write</a></li>
-								</ul>
-							</li>
 							<li>
 								<a href="/product/categories">Categories</a>
+							</li>
+							<li>
+								<a href="/product/write">Registration</a>
+							</li>
+							<li sec:authorize="isAuthenticated()">
+								<a href="/member/mypage">MyPage</a>
 							</li>
 						</ul>
 					</nav>
@@ -109,20 +108,16 @@
 					</form>
 				</div>
 				<ul class="page_menu_nav menu_mm">
-					<li class="page_menu_item has-children menu_mm">
-						<a href="/home">Home<i class="fa fa-angle-down"></i></a>
-						<ul class="page_menu_selection menu_mm">
-							<li class="page_menu_item menu_mm"><a href="/product/categories">Categories<i class="fa fa-angle-down"></i></a></li>
-						</ul>
-					</li>
-					<li class="page_menu_item has-children menu_mm">
-						<a href="/product/categories">Categories<i class="fa fa-angle-down"></i></a>
-						<ul class="page_menu_selection menu_mm">
-							<li class="page_menu_item menu_mm"><a href="/categories">Category<i class="fa fa-angle-down"></i></a></li>
-							<li class="page_menu_item menu_mm"><a href="/categories">Category<i class="fa fa-angle-down"></i></a></li>
-						</ul>
+					<li class="page_menu_item menu_mm">
+						<a href="/home">GamSung.</a>
 					</li>
 					<li class="page_menu_item menu_mm">
+						<a href="/product/categories">Categories</a>
+					</li>
+					<li class="page_menu_item menu_mm">
+						<a href="/product/write">Registration</a>
+					</li>
+					<li class="page_menu_item menu_mm" sec:authorize="isAuthenticated()">
 						<a href="/member/mypage">MyPage</a>
 					</li>
 				</ul>

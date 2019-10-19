@@ -29,62 +29,6 @@ $(function() {
 		return false;
 	});
 
-	/*chat*/
-//	document.addEventListener("DOMContentLoaded", function(){
-//		WebSocket.init();
-//	});
-	//소켓서버 접속, 정보셋팅, 응답 fn 정의
-	connect(function(obj){
-		var now = new Date();
-
-	    var year= now.getFullYear();
-	    var mon = (now.getMonth()+1)>9 ? ''+(now.getMonth()+1) : '0'+(now.getMonth()+1);
-	    var day = now.getDate()>9 ? ''+now.getDate() : '0'+now.getDate();
-	    var h = now.getHours();
-	    var m = now.getMinutes();
-	            
-	    var chan_val = year + '-' + mon + '-' + day +' '+h + ':' +m;
-
-		var message = obj.contents;
-		$('#greetings').append(
-				'<div class="row py-3 justify-content-end">\
-					<div>\
-						<div class="contents">'+message+'</div>\
-						<span>'+chan_val+'</span>\
-					</div>\
-				</div>');	
-			
-		$('#contents').val('');
-
-	},function(obj){
-		var now = new Date();
-
-	    var year= now.getFullYear();
-	    var mon = (now.getMonth()+1)>9 ? ''+(now.getMonth()+1) : '0'+(now.getMonth()+1);
-	    var day = now.getDate()>9 ? ''+now.getDate() : '0'+now.getDate();
-	    var h = now.getHours();
-	    var m = now.getMinutes();
-	            
-	    var chan_val = year + '-' + mon + '-' + day +' '+h + ':' +m;
-
-		var message = obj.contents;
-		var senderNickName = obj.senderNickName;
-		$('#greetings').append(
-				'<div class="row py-3 justify-content-start">\
-					<img class="profile col-2" src="/files/profile-files/'+receiverProfile+'">\
-					<div>\
-						<div>'+senderNickName+'</div>\
-						<div class="contents">'+message+'</div>\
-						<span>'+chan_val+'</span>\
-					</div>\
-				</div>');	
-	});
-	
-	//메세지 전송
-	$('#send').click(function(){
-		sendContent($('#contents').val());
-	});
-
 });
 
 /*찜하기*/
@@ -158,61 +102,78 @@ function introduction(){
 	});
 }
 
-/*chat*/
-function chatpop(){
+/* **********************************************
+ * 						chat
+ * **********************************************/
+$(function(){
+	function nowTime(now){
+	    var year= now.getFullYear();
+	    var mon = (now.getMonth()+1)>9 ? ''+(now.getMonth()+1) : '0'+(now.getMonth()+1);
+	    var day = now.getDate()>9 ? ''+now.getDate() : '0'+now.getDate();
+	    var ampm = now.getHours() < 12 ? "오전" : "오후";
+	    
+	    return year + '-' + mon + '-' + day +' ' + ampm + ' ' + now.getHours() + ':' +now.getMinutes();
+	}
+	
+	//소켓서버 접속, 정보셋팅, 응답 fn 정의
+	connect(function(obj){//발신
+		$('#greetings').append(
+				'<div class="row py-3 justify-content-end">\
+					<div>\
+						<div class="contents">'+obj.contents+'</div><span>'+nowTime(new Date())+'</span>\
+					</div>\
+				</div>');	
+		$('#contents').val('');
+	},function(obj){//수신
+		$('#greetings').append(
+				'<div class="row py-3 justify-content-start">\
+					<img class="profile col-2" src="/files/profile-files/'+receiverProfile+'">\
+					<div>\
+						<div>'+obj.senderNickName+'</div><div class="contents">'+obj.contents+'</div><span>'+nowTime(new Date())+'</span>\
+					</div>\
+				</div>');	
+		$('#contents').val('');
+	});
+	
+	$('#send').click(function(){//메세지 전송
+		sendContent($('#contents').val());
+	});
+});
 
+//채팅창 팝업
+function chatpop(){
 	var seller = $('.seller').attr('value');	
-    //팝업창출력
-    //width : 300px크기
-    //height : 300px크기
-    //top : 100px 위의 화면과 100px 차이해서 위치
-    //left : 100px 왼쪽화면과 100px 차이해서 위치
-    //툴바 X, 메뉴바 X, 스크롤바 X , 크기조절 X
     window.open('/member/chatting/'+seller,'popName',
-                'width=600,height=700,top=100,left=100,toolbar=no,menubar=no,scrollbars=no,resizable=no,status=no');
-//window.open('http://www.naver.com','popName',
-//                'width=550,height=700,top=100,left=100,toolbar=no,menubar=no,scrollbars=no,resizable=no,status=no');    
+                'width=600,height=700,top=100,left=100,toolbar=no,menubar=no,scrollbars=no,resizable=no,status=no');    
 }
+
 var senderNickName = $("#senderNickName").val();
-var senderId = $("#senderId").val();
-var receiverNickName = $("#receiverNickName").val();
-var receiverId = $("#receiverId").val();
 var receiverProfile = $("#profile").val();
 var currentId = $("#currentId").val();
 
 function connect(sendfn, receivefn){
-	var socket = new SockJS('http://172.16.6.18:8088/websocket'); //실행하는 서버 ip주소로 변경해야 웹소켓 가능
+	var socket = new SockJS('http://192.168.35.69:8088/websocket'); //실행하는 서버 ip주소로 변경해야 웹소켓 가능
 	stompClient = Stomp.over(socket);
 	stompClient.connect({},function(frame){
 		console.log('Connected : '+frame);
 		stompClient.subscribe('/topic/receive', function(obj){
-			if(JSON.parse(obj.body).sender==currentId){
+			if(JSON.parse(obj.body).sender==currentId){//발신
 				console.log(JSON.parse(obj.body).sender+" / "+currentId);
 				sendfn(JSON.parse(obj.body));
-			}else{
+			}else{//수신
 				console.log(JSON.parse(obj.body).sender+" / "+currentId);
 				receivefn(JSON.parse(obj.body));
 			}
 		});
-		stompClient.subscribe('/queue/info', function(obj){
-			sendfn(JSON.parse(obj.body));
-		});
-		stompClient.subscribe('/topic/out', function(obj){
-			sendfn(JSON.parse(obj.body));
-		});
-		stompClient.subscribe('/topic/in', function(obj){
-			sendfn(JSON.parse(obj.body));
-		});
-		stompClient.send("/app/in",{},senderId+'');
 	});
 }
 
 function sendContent(contents){
 	var query={}
 	query.senderNickName=senderNickName;
-	query.sender=senderId;
-	query.receiverNickName=receiverNickName;
-	query.receiver=receiverId;
+	query.sender=$("#senderId").val();
+	query.receiverNickName=$("#receiverNickName").val();
+	query.receiver=$("#receiverId").val();
 	query.contents = contents;
 	
 	stompClient.send('/app/receive',{}, JSON.stringify(query));

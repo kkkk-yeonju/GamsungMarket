@@ -52,13 +52,13 @@ class Message extends Component {
                             <i className="icon pe-7s-paper-plane col-1" title={message.relativeId} onClick={this.chatpop}></i>
                             <div className="col-2">
                                 <img className="profile m-0" style={{position:"initial",width:'90px', height:'90px'}} src={`/files/profile-files/${message.profile}`} />
-                                <div>{message.relativeNick}</div>
+                                <div className="product_title"><a href={`/member/store/${message.relativeId}`}>{message.relativeNick}</a></div>
                             </div>
                             <div className="col-5">
                                 <div className="text-left">{message.contents}</div>
                             </div>
                             <div className="col-4">
-                                <div>{dateFormat(message.sendDate,'yyyy-mm-dd hh:MM')}</div>
+                                <div>{dateFormat(message.sendDate,'yyyy-mm-dd TT hh:MM')}</div>
                             </div>
                         </div><hr/>
                     </Fragment>

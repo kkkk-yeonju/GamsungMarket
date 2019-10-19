@@ -1,8 +1,8 @@
 import * as axios from 'axios';
 
-export const getProductList = (type ,category, keyword, pageNo) => {
+export const getProductList = () => {
     return new Promise((resolve, reject) => {
-        axios.post("/product/categories",type ,category, keyword, pageNo)
+        axios.post("/product/categories")
             .then((result) => {
                 const data = result.data;
                 resolve(data);

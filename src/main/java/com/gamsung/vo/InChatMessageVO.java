@@ -1,5 +1,7 @@
 package com.gamsung.vo;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import lombok.Data;
@@ -11,7 +13,7 @@ public class InChatMessageVO {
 	private String receiver;
 	private String sender;
 	private String contents;
-	private Date sendDate;
+	private LocalDateTime sendDate;
 	
 
 	private String senderNickName;
@@ -28,8 +30,7 @@ public class InChatMessageVO {
 				", sender=" + sender +
 				", senderNickName=" + senderNickName+
 				", receiverNickName=" + receiverNickName+
-				", relativeId=" + relativeId+
-				", relativeNick=" + relativeNick+"]";
+				", sendDate=" + sendDate+"]\n";
 	}
 	
 	public void setRelativeId(InChatMessageVO message,String me) {
@@ -47,5 +48,5 @@ public class InChatMessageVO {
 			this.relativeNick = message.getReceiverNickName();
 		}
 	}
-	
+
 }

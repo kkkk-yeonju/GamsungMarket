@@ -1,5 +1,6 @@
 package com.gamsung.controller;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -48,8 +49,6 @@ public class ChatController {
 
 			else if (msg.getSender().equals(sender))
 				msg.setAlign("end");
-//			String profile = memberService.findProfileImgById(msg.getSender());
-//			msg.setProfile(profile);
 
 		}
 		model.addAttribute("receiver", receiver);
@@ -62,8 +61,6 @@ public class ChatController {
 	public String inroom(String message, SimpMessageHeaderAccessor session) {
 		if (message != null && !message.equals("undefined")) {
 			clients.put(session.getSessionId(), message);
-			System.out.println(session.getSessionId());
-			System.out.println("in User : " + message);
 		}
 		return message;
 	}
@@ -73,7 +70,6 @@ public class ChatController {
 	public InChatMessageVO broadcasting(InChatMessageVO message, SimpMessageHeaderAccessor session) {
 
 		System.out.println(clients.get(session.getSessionId()));
-
 		System.out.println("message : " + message);
 		return message;
 	}
